@@ -49,4 +49,4 @@ async function sendTestRequest() {
   }
 }
 
-sendTestRequest();
+void sendTestRequest();

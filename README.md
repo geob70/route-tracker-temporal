@@ -1,18 +1,122 @@
-# Hello World
+# Eagle Brain – Route Monitoring API
 
-This is the default project that is scaffolded out when you run `npx @temporalio/create@latest ./myfolder`.
+A project to monitor delivery routes for traffic delays using Temporal workflows.
+You can test this either using Express js or using Temporal commands
 
-The [Hello World Tutorial](https://learn.temporal.io/getting_started/typescript/hello_world_in_typescript/) walks through the code in this sample.
+## Temporal command
 
-### Running this sample
+- `origin`: `[lat, lng]` array
+- `destination`: `[lat, lng]` array
+- `threshold`: Number (minutes)
+- `recipient`: Email address
 
-1. `temporal server start-dev` to start [Temporal Server](https://github.com/temporalio/cli/#installation).
-1. `npm install` to install dependencies.
-1. `npm run start.watch` to start the Worker.
-1. In another shell, `npm run workflow` to run the Workflow Client.
+## How It Works (Temporal)
 
-The Workflow should return:
+- Starts a Temporal workflow for each route to monitor traffic delays.
+- Sends email notifications if delays exceed the threshold.
 
-```bash
-Hello, Temporal!
+## Testing (Temporal)
+
+1. **Start Temporal Server**
+     Ensure Temporal server is running locally on port `7233`.
+     Run:
+
+     ```temporal server start-dev
+     ```
+
+2. **Start Worker**
+     Run:
+
+     ```bash
+     ts-node src/worker.ts
+     # or
+     npm run start
+     ```
+
+3. **Set Environment Variables**
+     - Google Maps API key
+     - SMTP settings for email notifications
+
+4. **Start Client workflow**
+     - Run:
+
+         ```bash
+         ts-node src/client.ts
+         # or
+         npm run workflow
+         ```
+
+## Express js
+
+### `POST localhost:8000/monitor-routes`
+
+**Payload Example:**
+
+```json
+[
+    {
+        "origin": [12.9716, 77.5946],
+        "destination": [13.0827, 80.2707],
+        "threshold": 30,
+        "recipient": "user@example.com"
+    }
+]
 ```
+
+- `origin`: `[lat, lng]` array
+- `destination`: `[lat, lng]` array
+- `threshold`: Number (minutes)
+- `recipient`: Email address
+
+**Response:**
+Returns `202 Accepted` if workflows started successfully.
+
+## How It Works (Express js)
+
+- Start express server for Route Monitoring API
+- Starts a Temporal workflow for each route to monitor traffic delays.
+- Sends email notifications if delays exceed the threshold.
+
+## Testing (Express js)
+
+1. **Start Express Server**
+    Run:
+
+    ```bash
+    npm run server
+    ```
+
+2. **Start Temporal Server**
+     Ensure Temporal server is running locally on port `7233`.
+     Run:
+
+     ```temporal server start-dev
+     ```
+
+3. **Start Worker**
+     Run:
+
+     ```bash
+     ts-node src/worker.ts
+     # or
+     npm run start
+     ```
+
+4. **Set Environment Variables**
+     - Google Maps API key
+     - SMTP settings for email notifications
+
+5. **Send Test Request**
+     - Use Postman to POST to `/monitor-routes` with the payload above.
+     - Or run:
+
+         ```bash
+         ts-node src/sendRequest.ts
+         # or
+         npm run test:server
+         ```
+
+## Notes
+
+- All required environment variables must be set before testing.
+- The API expects a JSON array of routes.
