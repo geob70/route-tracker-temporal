@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "clean": "tsc --build --clean",
     "build": "tsc --build",
     "build.watch": "tsc --build --watch",
     "format": "prettier --write .",
@@ -11,6 +12,8 @@
     "start": "ts-node src/worker.ts",
     "start.watch": "nodemon src/worker.ts",
     "workflow": "ts-node src/client.ts",
+    "server": "ts-node src/server.ts",
+    "test:server": "ts-node src/sendRequest.ts",
     "test": "mocha --exit --require ts-node/register --require source-map-support/register src/mocha/*.test.ts"
   },
   "nodemonConfig": {
@@ -23,14 +26,25 @@
     ]
   },
   "dependencies": {
+    "@sendgrid/mail": "^8.1.6",
     "@temporalio/activity": "^1.13.0",
     "@temporalio/client": "^1.13.0",
     "@temporalio/worker": "^1.13.0",
     "@temporalio/workflow": "^1.13.0",
-    "nanoid": "3.x"
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "nanoid": "3.x",
+    "node-fetch": "^3.3.2",
+    "openai": "^5.23.1",
+    "redis": "^5.8.2",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@temporalio/testing": "^1.13.0",
+    "@tsconfig/node23": "^23.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
     "@types/mocha": "8.x",
     "@types/node": "^22.9.1",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
@@ -42,7 +56,6 @@
     "nodemon": "^3.1.7",
     "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3",
-    "@tsconfig/node23": "^23.0.0"
+    "typescript": "^5.6.3"
   }
 }
