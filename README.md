@@ -21,7 +21,8 @@ You can test this either using Express js or using Temporal commands
      Ensure Temporal server is running locally on port `7233`.
      Run:
 
-     ```temporal server start-dev
+     ```bash
+    temporal server start-dev
      ```
 
 2. **Start Worker**
